@@ -94,6 +94,7 @@ export async function GET(request: NextRequest) {
           suspicious: vtStats.suspicious ?? 0,
           harmless: vtStats.harmless ?? 0,
           reputation: vt.data?.attributes?.reputation ?? 0,
+          permalink: `https://www.virustotal.com/gui/ip-address/${ip}/detection`,
         },
         abuseipdb: {
           abuseConfidencePercentage: abuseScore,
@@ -101,6 +102,7 @@ export async function GET(request: NextRequest) {
           countryCode: abuse.data?.countryCode ?? "N/A",
           isp: abuse.data?.isp ?? "N/A",
           domain: abuse.data?.domain ?? "N/A",
+          permalink: `https://www.abuseipdb.com/check/${ip}`,
         },
 iplocation: {
   country: geo.country ?? "N/A",

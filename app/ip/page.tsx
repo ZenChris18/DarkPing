@@ -33,6 +33,19 @@ export default function IPResultsPage() {
       }
 
       const data = await response.json()
+
+      // Debug: log what we got
+      console.log("Fetched IP data:", data)
+
+      // Patch missing links if backend isnt working
+      if (data.sources?.virustotal && !data.sources.virustotal.permalink) {
+        data.sources.virustotal.permalink = `https://www.virustotal.com/gui/ip-address/${ip}`
+      }
+
+      if (data.sources?.abuseipdb && !data.sources.abuseipdb.reportLink) {
+        data.sources.abuseipdb.reportLink = `https://abuseipdb.com/check/${ip}`
+      }
+
       setResults(data)
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred")
@@ -41,9 +54,7 @@ export default function IPResultsPage() {
     }
   }
 
-  const defangIP = (ip: string) => {
-    return ip.replace(/\./g, "[.]")
-  }
+  const defangIP = (ip: string) => ip.replace(/\./g, "[.]")
 
   if (loading) {
     return (
@@ -126,9 +137,9 @@ export default function IPResultsPage() {
                   { key: "suspicious", label: "Suspicious Votes", type: "number" },
                   { key: "harmless", label: "Harmless Votes", type: "number" },
                   { key: "reputation", label: "Community Score", type: "number" },
+                  { key: "permalink", label: "View Report", type: "link" },
                 ]}
               />
-
             )}
 
             {results.sources?.abuseipdb && (
@@ -142,9 +153,11 @@ export default function IPResultsPage() {
                   { key: "countryCode", label: "Country", type: "text" },
                   { key: "isp", label: "ISP", type: "text" },
                   { key: "domain", label: "Domain", type: "text" },
+                  { key: "reportLink", label: "View Report", type: "link" },
                 ]}
               />
             )}
+
             {results.sources?.iplocation && (
               <SourceAccordion
                 title="Location Information"
