@@ -7,6 +7,7 @@ import SourceAccordion from "@/components/SourceAccordion"
 import LoadingSpinner from "@/components/LoadingSpinner"
 import CopyButton from "@/components/CopyButton"
 import { FileSearch, AlertTriangle, Database, Bug } from "lucide-react"
+import GoHomeButton from "@/components/Button"
 
 export default function HashResultsPage() {
   const searchParams = useSearchParams()
@@ -114,15 +115,18 @@ export default function HashResultsPage() {
   // Success: show results
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-4">Hash Analysis Results</h1>
-        <div className="flex items-center gap-4 mb-4">
-          <span className="text-sm font-mono bg-gray-800 px-4 py-2 rounded-lg break-all">
-            {hash}
-          </span>
-          <CopyButton text={hash} label="Copy Hash" />
-        </div>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold">Hash Analysis Results</h1>
+        <GoHomeButton />
       </div>
+
+      <div className="flex items-center gap-4 mb-8">
+        <span className="text-sm font-mono bg-gray-800 px-4 py-2 rounded-lg break-all">
+          {hash}
+        </span>
+        <CopyButton text={hash} label="Copy Hash" />
+      </div>
+
 
       <div className="space-y-6">
         <ResultSummary

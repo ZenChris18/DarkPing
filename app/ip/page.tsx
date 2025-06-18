@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
+import GoHomeButton from "@/components/Button"
 import ResultSummary from "@/components/ResultSummary"
 import SourceAccordion from "@/components/SourceAccordion"
 import LoadingSpinner from "@/components/LoadingSpinner"
@@ -34,14 +35,11 @@ export default function IPResultsPage() {
 
       const data = await response.json()
 
-      // Debug: log what we got
       console.log("Fetched IP data:", data)
 
-      // Patch missing links if backend isnt working
       if (data.sources?.virustotal && !data.sources.virustotal.permalink) {
         data.sources.virustotal.permalink = `https://www.virustotal.com/gui/ip-address/${ip}`
       }
-
       if (data.sources?.abuseipdb && !data.sources.abuseipdb.reportLink) {
         data.sources.abuseipdb.reportLink = `https://abuseipdb.com/check/${ip}`
       }
@@ -89,12 +87,16 @@ export default function IPResultsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-4">IP Analysis Results</h1>
-        <div className="flex items-center gap-4 mb-4">
-          <span className="text-xl font-mono bg-gray-800 px-4 py-2 rounded-lg">{ip}</span>
-          <CopyButton text={defangIP(ip)} label="Copy Defanged IP" />
-        </div>
+      {/* Header with title and back button */}
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold">IP Analysis Results</h1>
+          <GoHomeButton />
+      </div>
+      
+      {/* IP display + copy */}
+      <div className="flex items-center gap-4 mb-8">
+        <span className="text-xl font-mono bg-gray-800 px-4 py-2 rounded-lg">{ip}</span>
+        <CopyButton text={defangIP(ip)} label="Copy Defanged IP" />
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
