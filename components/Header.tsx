@@ -18,6 +18,9 @@ export default function Header() {
             <Link href="/about" className="text-gray-300 hover:text-white transition-colors">
               About
             </Link>
+            <Link href="/apikeys" className="text-gray-300 hover:text-white transition-colors">
+              API
+            </Link>
           </nav>
         </div>
       </div>

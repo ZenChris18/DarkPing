@@ -26,33 +26,49 @@ export default function IPResultsPage() {
   const fetchIPData = async (ipAddress: string) => {
     try {
       setLoading(true)
+      setError(null)
+
+      // grab keys from localStorage
+      const vpnKey   = localStorage.getItem("apikey_vpnapi")      || ""
+      const vtKey    = localStorage.getItem("apikey_virustotal") || ""
+      const abuseKey = localStorage.getItem("apikey_abuseipdb")  || ""
+
       const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || ""
-      const response = await fetch(`${apiBase}/api/check-ip?ip=${encodeURIComponent(ipAddress)}`)
+      const response = await fetch(
+        `${apiBase}/api/check-ip?ip=${encodeURIComponent(ipAddress)}`, {
+          headers: {
+            "x-vpnapi-key":     vpnKey,
+            "x-virustotal-key": vtKey,
+            "x-abuseipdb-key":  abuseKey,
+          },
+        }
+      )
 
       if (!response.ok) {
-        throw new Error("Failed to fetch IP data")
+        const body = await response.json().catch(() => ({}))
+        throw new Error(body.error || "Failed to fetch IP data")
       }
 
       const data = await response.json()
-
       console.log("Fetched IP data:", data)
 
+      // fallback permalinks
       if (data.sources?.virustotal && !data.sources.virustotal.permalink) {
-        data.sources.virustotal.permalink = `https://www.virustotal.com/gui/ip-address/${ip}`
+        data.sources.virustotal.permalink = `https://www.virustotal.com/gui/ip-address/${ipAddress}`
       }
       if (data.sources?.abuseipdb && !data.sources.abuseipdb.reportLink) {
-        data.sources.abuseipdb.reportLink = `https://abuseipdb.com/check/${ip}`
+        data.sources.abuseipdb.reportLink = `https://abuseipdb.com/check/${ipAddress}`
       }
 
       setResults(data)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
+    } catch (err: any) {
+      setError(err.message || "An error occurred")
     } finally {
       setLoading(false)
     }
   }
 
-  const defangIP = (ip: string) => ip.replace(/\./g, "[.]")
+  const defangIP = (addr: string) => addr.replace(/\./g, "[.]")
 
   if (loading) {
     return (
@@ -87,19 +103,20 @@ export default function IPResultsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Header with title and back button */}
+      {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold">IP Analysis Results</h1>
-          <GoHomeButton />
+        <GoHomeButton />
       </div>
       
-      {/* IP display + copy */}
+      {/* IP + copy */}
       <div className="flex items-center gap-4 mb-8">
         <span className="text-xl font-mono bg-gray-800 px-4 py-2 rounded-lg">{ip}</span>
         <CopyButton text={defangIP(ip)} label="Copy Defanged IP" />
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
+        {/* Left / main */}
         <div className="lg:col-span-2 space-y-6">
           <ResultSummary
             score={results.summary?.score || 0}
@@ -178,6 +195,7 @@ export default function IPResultsPage() {
           </div>
         </div>
 
+        {/* Right / map */}
         <div className="space-y-6">
           {results.sources?.iplocation?.lat && results.sources?.iplocation?.lon && (
             <div className="card">

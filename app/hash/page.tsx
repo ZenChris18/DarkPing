@@ -18,11 +18,10 @@ export default function HashResultsPage() {
   const [results, setResults] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
 
-  // Validate MD5 / SHA-1 / SHA-256 hex lengths
   const isValidHash = (h: string) => {
-    return /^[A-Fa-f0-9]{32}$/.test(h)   // MD5
-        || /^[A-Fa-f0-9]{40}$/.test(h)   // SHA-1
-        || /^[A-Fa-f0-9]{64}$/.test(h)   // SHA-256
+    return /^[A-Fa-f0-9]{32}$/.test(h)
+        || /^[A-Fa-f0-9]{40}$/.test(h)
+        || /^[A-Fa-f0-9]{64}$/.test(h)
   }
 
   useEffect(() => {
@@ -36,8 +35,6 @@ export default function HashResultsPage() {
       setError("Please enter a valid MD5 (32 chars), SHA‑1 (40 chars), or SHA‑256 (64 chars) hash.")
       return
     }
-
-    // All good — fetch data
     fetchHashData(hashParam)
   }, [hashParam])
 
@@ -46,16 +43,26 @@ export default function HashResultsPage() {
       setLoading(true)
       setError(null)
 
+      // grab VT key
+      const vtKey = localStorage.getItem("apikey_virustotal") || ""
+
       const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || ""
-      const res = await fetch(`${apiBase}/api/check-hash?hash=${encodeURIComponent(hashValue)}`)
+      const res = await fetch(
+        `${apiBase}/api/check-hash?hash=${encodeURIComponent(hashValue)}`,
+        {
+          headers: { "x-virustotal-key": vtKey },
+        }
+      )
 
       if (!res.ok) {
-        throw new Error(`Failed to fetch hash data (${res.status})`)
+        const body = await res.json().catch(() => ({}))
+        throw new Error(body.error || `Failed to fetch hash data (${res.status})`)
       }
+
       const data = await res.json()
       setResults(data)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
+    } catch (err: any) {
+      setError(err.message || "An error occurred")
     } finally {
       setLoading(false)
     }
@@ -63,7 +70,6 @@ export default function HashResultsPage() {
 
   // --- RENDERING ---
 
-  // No hash in URL
   if (!hash) {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
@@ -75,7 +81,6 @@ export default function HashResultsPage() {
     )
   }
 
-  // Validation error
   if (error && !loading && !results) {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
@@ -87,7 +92,6 @@ export default function HashResultsPage() {
     )
   }
 
-  // Loading state
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-12">
@@ -96,7 +100,6 @@ export default function HashResultsPage() {
     )
   }
 
-  // API error
   if (error && !loading && results === null) {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
@@ -107,12 +110,8 @@ export default function HashResultsPage() {
     )
   }
 
-  // No results (shouldn't happen if no error/loading)
-  if (!results) {
-    return null
-  }
+  if (!results) return null
 
-  // Success: show results
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
@@ -126,7 +125,6 @@ export default function HashResultsPage() {
         </span>
         <CopyButton text={hash} label="Copy Hash" />
       </div>
-
 
       <div className="space-y-6">
         <ResultSummary
@@ -143,19 +141,17 @@ export default function HashResultsPage() {
           </h2>
 
           {results.sources?.virustotal && (
-            <>
-              <SourceAccordion
-                title="VirusTotal"
-                icon={<AlertTriangle className="w-5 h-5" />}
-                data={results.sources.virustotal}
-                fields={[
-                  { key: "positives", label: "Detections", type: "number" },
-                  { key: "total", label: "Total Engines", type: "number" },
-                  { key: "scan_date", label: "Scan Date", type: "date" },
-                  { key: "permalink", label: "Report Link", type: "link" },
-                ]}
-              />
-            </>
+            <SourceAccordion
+              title="VirusTotal"
+              icon={<AlertTriangle className="w-5 h-5" />}
+              data={results.sources.virustotal}
+              fields={[
+                { key: "positives", label: "Detections", type: "number" },
+                { key: "total", label: "Total Engines", type: "number" },
+                { key: "scan_date", label: "Scan Date", type: "date" },
+                { key: "permalink", label: "Report Link", type: "link" },
+              ]}
+            />
           )}
 
           {results.sources?.hybridanalysis && (
