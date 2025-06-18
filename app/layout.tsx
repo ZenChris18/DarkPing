@@ -8,7 +8,7 @@ import Footer from "@/components/Footer" // add below main if needed
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "ThreatLens - IP & Hash Reputation Checker",
+  title: "DarkPing - IP & Hash Reputation Checker",
   description: "Advanced threat intelligence platform for checking IP addresses and file hashes",
   keywords: "threat intelligence, IP reputation, hash checker, malware analysis"
 }

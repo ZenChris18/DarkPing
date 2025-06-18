@@ -1,7 +1,20 @@
+"use client" // 👈 Required to access localStorage
+
+import { useEffect, useState } from "react"
 import InputCard from "@/components/InputCard"
 import { Shield, FileSearch } from "lucide-react"
 
 export default function Home() {
+  const [missingKeys, setMissingKeys] = useState(false)
+
+  useEffect(() => {
+    const missing =
+      !localStorage.getItem("vpnapi") ||
+      !localStorage.getItem("virustotal") ||
+      !localStorage.getItem("abuseipdb")
+    setMissingKeys(missing)
+  }, [])
+
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="text-center mb-12">
@@ -11,6 +24,11 @@ export default function Home() {
         <p className="text-xl text-gray-400 max-w-2xl mx-auto">
           Instantly investigate IP addresses and file hashes across multiple threat intel providers — all in one place.
         </p>
+        {missingKeys && (
+          <p className="text-sm text-yellow-400 mt-4">
+            ⚠️ Some API keys are missing. <a href="/apikeys" className="underline">Set them here</a>.
+          </p>
+        )}
       </div>
 
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
