@@ -9,9 +9,9 @@ export default function Home() {
 
   useEffect(() => {
     const missing =
-      !localStorage.getItem("vpnapi") ||
-      !localStorage.getItem("virustotal") ||
-      !localStorage.getItem("abuseipdb")
+      !localStorage.getItem("apikey_vpnapi") ||
+      !localStorage.getItem("apikey_virustotal") ||
+      !localStorage.getItem("apikey_abuseipdb")
     setMissingKeys(missing)
   }, [])
 
