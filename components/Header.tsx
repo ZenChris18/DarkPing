@@ -8,7 +8,7 @@ export default function Header() {
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
             <Shield className="w-8 h-8 text-threat-red" />
-            <span className="text-2xl font-bold text-white">Testing</span>
+            <span className="text-2xl font-bold text-white">DarkPing</span>
           </Link>
 
           <nav className="hidden md:flex items-center space-x-6">
