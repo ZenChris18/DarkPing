@@ -35,6 +35,13 @@ export default function ApiKeyPage() {
     <div className="max-w-xl mx-auto py-12 px-4">
       <h1 className="text-3xl font-bold mb-6 text-white">Manage API Keys</h1>
 
+      <p className="text-sm text-yellow-400 mb-6">
+        ⚠️ <strong>Your API keys are stored <u>locally</u> in your browser and are never sent to any server except the official threat intelligence APIs you use.<br />
+        They are <u>not</u> shared with or stored by this app's developers or any third party.</strong>
+        <br />
+        For your privacy and security, use dedicated API keys when possible.
+      </p>
+
       {[
         { label: "VPNAPI", value: vpnapi, onChange: setVpnapi, keyName: STORAGE_KEYS.vpnapi },
         { label: "VirusTotal", value: virustotal, onChange: setVirustotal, keyName: STORAGE_KEYS.virustotal },
