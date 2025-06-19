@@ -7,12 +7,13 @@ import SourceAccordion from "@/components/SourceAccordion"
 import LoadingSpinner from "@/components/LoadingSpinner"
 import CopyButton from "@/components/CopyButton"
 import { FileSearch, AlertTriangle, Database, Bug } from "lucide-react"
-import GoHomeButton from "@/components/Button"
+import IPSearchBar from "@/components/IPSearchBar"
+import { useRouter } from "next/navigation"
 
 export default function HashResultsPage() {
   const searchParams = useSearchParams()
   const hashParam = searchParams.get("value") || ""
-  
+  const router = useRouter()
   const [hash, setHash] = useState(hashParam)
   const [loading, setLoading] = useState(false)
   const [results, setResults] = useState<any>(null)
@@ -22,6 +23,11 @@ export default function HashResultsPage() {
     return /^[A-Fa-f0-9]{32}$/.test(h)
         || /^[A-Fa-f0-9]{40}$/.test(h)
         || /^[A-Fa-f0-9]{64}$/.test(h)
+  }
+
+  const handleSearch = (newHash: string) => {
+    setHash(newHash)
+    router.replace(`/hash?value=${encodeURIComponent(newHash)}`)
   }
 
   useEffect(() => {
@@ -114,11 +120,19 @@ export default function HashResultsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+      {/* Header + Search Bar */}
+      <div className="mb-8 space-y-4">
         <h1 className="text-3xl font-bold">Hash Analysis Results</h1>
-        <GoHomeButton />
+        <div className="w-full max-w-md">
+          <IPSearchBar
+            onSearch={handleSearch}
+            placeholder="Enter new hash (MD5, SHA-1, or SHA-256)" // updated placeholder for hash page
+            buttonText="Search"
+          />
+        </div>
       </div>
 
+      {/* Hash + copy */}
       <div className="flex items-center gap-4 mb-8">
         <span className="text-sm font-mono bg-gray-800 px-4 py-2 rounded-lg break-all">
           {hash}

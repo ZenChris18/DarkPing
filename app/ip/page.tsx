@@ -1,18 +1,20 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
-import GoHomeButton from "@/components/Button"
+import { useRouter, useSearchParams } from "next/navigation"
 import ResultSummary from "@/components/ResultSummary"
 import SourceAccordion from "@/components/SourceAccordion"
 import LoadingSpinner from "@/components/LoadingSpinner"
 import IPMap from "@/components/IPMap"
 import CopyButton from "@/components/CopyButton"
 import { MapPin, Shield, AlertTriangle, Database } from "lucide-react"
+import IPSearchBar from "@/components/IPSearchBar"
 
 export default function IPResultsPage() {
+  const router = useRouter()
   const searchParams = useSearchParams()
-  const ip = searchParams.get("value")
+  const initialIP = searchParams.get("value") || ""
+  const [ip, setIP] = useState(initialIP)
   const [loading, setLoading] = useState(true)
   const [results, setResults] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
@@ -21,6 +23,7 @@ export default function IPResultsPage() {
     if (ip) {
       fetchIPData(ip)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ip])
 
   const fetchIPData = async (ipAddress: string) => {
@@ -71,6 +74,12 @@ export default function IPResultsPage() {
   const defangIP = (addr: string) =>
     addr.replace(/\./g, "[.]").replace(/:/g, "[:]")
 
+  // Add this handler for the input bar
+  const handleSearch = (newIP: string) => {
+    setIP(newIP)
+    router.replace(`/ip?value=${encodeURIComponent(newIP)}`)
+  }
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-12">
@@ -104,10 +113,13 @@ export default function IPResultsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+
+      {/* Header + Search Bar */}
+      <div className="mb-8 space-y-4">
         <h1 className="text-3xl font-bold">IP Analysis Results</h1>
-        <GoHomeButton />
+        <div className="w-full max-w-md">
+          <IPSearchBar onSearch={handleSearch} />
+        </div>
       </div>
       
       {/* IP + copy */}
