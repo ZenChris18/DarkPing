@@ -68,7 +68,8 @@ export default function IPResultsPage() {
     }
   }
 
-  const defangIP = (addr: string) => addr.replace(/\./g, "[.]")
+  const defangIP = (addr: string) =>
+    addr.replace(/\./g, "[.]").replace(/:/g, "[:]")
 
   if (loading) {
     return (

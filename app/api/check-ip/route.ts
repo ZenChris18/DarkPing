@@ -2,14 +2,19 @@
 
 import { type NextRequest, NextResponse } from "next/server"
 
-const IPV4_REGEX = /^(25[0-5]|2[0-4]\d|1?\d{1,2})(\.(25[0-5]|2[0-4]\d|1?\d{1,2})){3}$/
+const IPV4_REGEX = /^(25[0-5]|2[0-4]\d|1?\d{1,2})(\.(25[0-5]|2[0-4]\d|1?\d{1,2})){3}$/;
+const IPV6_REGEX = /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|(([0-9a-fA-F]{1,4}:){1,7}:)|(([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4})|(([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2})|(([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3})|(([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4})|(([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5})|([0-9a-fA-F]{1,4}:)((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9])?[0-9]))$/;
+
+function isValidIP(ip: string) {
+  return IPV4_REGEX.test(ip) || IPV6_REGEX.test(ip);
+}
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const ip = searchParams.get("ip")
 
   if (!ip) return NextResponse.json({ error: "IP address is required" }, { status: 400 })
-  if (!IPV4_REGEX.test(ip)) return NextResponse.json({ error: "Invalid IPv4 address format" }, { status: 400 })
+  if (!isValidIP(ip)) return NextResponse.json({ error: "Invalid IP address format" }, { status: 400 })
 
   const vpnKey   = request.headers.get("x-vpnapi-key")       || process.env.VPNAPI_KEY
   const vtKey    = request.headers.get("x-virustotal-key")   || process.env.VIRUSTOTAL_KEY
