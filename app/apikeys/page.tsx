@@ -1,5 +1,6 @@
 'use client'
 
+import { Info } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const STORAGE_KEYS = {
@@ -33,14 +34,20 @@ export default function ApiKeyPage() {
 
   return (
     <div className="max-w-xl mx-auto py-12 px-4">
-      <h1 className="text-3xl font-bold mb-6 text-white">Manage API Keys</h1>
-
-      <p className="text-sm text-yellow-400 mb-6">
-        ⚠️ <strong>Your API keys are stored <u>locally</u> in your browser and are never sent to any server except the official threat intelligence APIs you use.<br />
-        They are <u>not</u> shared with or stored by this app's developers or any third party.</strong>
-        <br />
-        For your privacy and security, use dedicated API keys when possible.
-      </p>
+      <div className="flex items-center gap-2 mb-6">
+        <h1 className="text-3xl font-bold text-white">Manage API Keys</h1>
+        <span className="relative group">
+          <Info className="w-5 h-5 text-yellow-400 cursor-pointer" />
+          <span className="absolute left-6 top-full mt-2 bg-gray-900 text-yellow-400 text-xs rounded px-3 py-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10 w-64">
+            <b>Privacy:</b><br />
+            • Keys are <u>only</u> stored in your browser.<br />
+            • Never sent to our server.<br />
+            • Used just for threat API requests.<br />
+            • Clear anytime with the button.<br />
+            <span className="text-yellow-300">Use dedicated keys for best security.</span>
+          </span>
+        </span>
+      </div>
 
       {[
         { label: "VPNAPI", value: vpnapi, onChange: setVpnapi, keyName: STORAGE_KEYS.vpnapi },
