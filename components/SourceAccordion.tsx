@@ -18,7 +18,7 @@ interface SourceAccordionProps {
 }
 
 export default function SourceAccordion({ title, icon, data, fields }: SourceAccordionProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true) // change to false if you want it closed by default
 
   const formatValue = (value: any, type: Field["type"]) => {
     if (value === null || value === undefined) return "N/A"
