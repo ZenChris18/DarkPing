@@ -1,4 +1,4 @@
-"use client" // 👈 Required to access localStorage
+"use client" 
 
 import { useEffect, useState } from "react"
 import InputCard from "@/components/InputCard"
