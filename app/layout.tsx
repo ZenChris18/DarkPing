@@ -3,7 +3,8 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import Header from "@/components/Header"
-import Footer from "@/components/Footer" // add below main if needed
+import Footer from "@/components/Footer"
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -24,6 +25,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-1">{children}</main> 
         <Footer />
+        <Analytics />
       </body>
     </html>
   )
