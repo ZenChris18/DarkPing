@@ -40,6 +40,28 @@ export default function SourceAccordion({ title, icon, data, fields }: SourceAcc
         return formatBytes(value)
       case "number":
         return typeof value === "number" ? value.toLocaleString() : value
+      case "json":
+        if (value && typeof value === "object" && !Array.isArray(value)) {
+          const entries = Object.entries(value)
+          if (entries.length === 0) {
+            return <span className="text-gray-400">No vendor categories available for this domain.</span>
+          }
+          return (
+            <ul className="text-xs space-y-1">
+              {entries.map(([source, verdict]) => (
+                <li key={source}>
+                  <span className="text-yellow-400">{source}:</span>{" "}
+                  <span className="text-white">{verdict as string}</span>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+        return (
+          <pre className="text-xs whitespace-pre-wrap break-all bg-gray-900 p-2 rounded">
+            {JSON.stringify(value, null, 2)}
+          </pre>
+        )
       default:
         return value.toString()
     }
