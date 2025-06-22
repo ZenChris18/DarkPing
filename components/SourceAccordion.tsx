@@ -7,7 +7,7 @@ import type { ReactNode } from "react"
 interface Field {
   key: string
   label: string
-  type: "text" | "number" | "boolean" | "percentage" | "date" | "link" | "bytes"
+  type: "text" | "number" | "boolean" | "percentage" | "date" | "link" | "bytes" | "json"
 }
 
 interface SourceAccordionProps {

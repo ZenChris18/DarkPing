@@ -4,7 +4,7 @@ interface ResultSummaryProps {
   score: number
   verdict: string
   recommendation: string
-  type: "ip" | "hash"
+  type: "ip" | "hash" | "domain"
 }
 
 export default function ResultSummary({ score, verdict, recommendation, type }: ResultSummaryProps) {

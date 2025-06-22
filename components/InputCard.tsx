@@ -12,13 +12,25 @@ interface InputCardProps {
   placeholder: string
   buttonText: string
   icon: ReactNode
-  type: "ip" | "hash"
+  type: "ip" | "hash" | "domain"
 }
 
 export default function InputCard({ title, description, placeholder, buttonText, icon, type }: InputCardProps) {
   const [value, setValue] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+
+  const extractDomain = (input: string) =>{
+  try{
+    if (/^https?:\/\//i.test(input)) {
+      return new URL(input).hostname
+    }
+    // Remove trailing slashes and whitespace
+    return input.trim().replace(/^\/+|\/+$/g, "")
+  } catch {
+    return input.trim()
+  }
+}
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,8 +39,16 @@ export default function InputCard({ title, description, placeholder, buttonText,
     setIsLoading(true)
 
     // Navigate to results page
-    const route = type === "ip" ? "/ip" : "/hash"
-    router.push(`${route}?value=${encodeURIComponent(value.trim())}`)
+    let route = "/"
+    let queryValue = value.trim()
+    if (type === "ip") route = "/ip"
+    else if (type === "hash") route = "/hash"
+    else if (type === "domain") {
+      route = "/domain"
+      queryValue = extractDomain(queryValue)
+    }
+
+    router.push(`${route}?value=${encodeURIComponent(queryValue)}`)
   }
 
   return (

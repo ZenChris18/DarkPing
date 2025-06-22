@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import InputCard from "@/components/InputCard"
-import { Shield, FileSearch } from "lucide-react"
+import { Shield, FileSearch, Globe } from "lucide-react"
 
 export default function Home() {
   const [missingKeys, setMissingKeys] = useState(false)
@@ -31,9 +31,9 @@ export default function Home() {
         )}
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto"> 
         <InputCard
-          title="IP Reputation Check"
+          title="IP Reputation"
           description="Check if an IP is flagged as malicious, a VPN, or a known threat actor."
           placeholder="Enter IP address (e.g., 8.8.8.8)"
           buttonText="Scan IP"
@@ -42,12 +42,21 @@ export default function Home() {
         />
 
         <InputCard
-          title="File Hash Analysis"
+          title="File Hash Reputation"
           description="Cross-reference MD5, SHA-1, or SHA-256 hashes against malware databases."
           placeholder="Enter hash (e.g., d41d8cd98f00b204...)"
           buttonText="Scan Hash"
           icon={<FileSearch className="w-8 h-8 text-threat-red" />}
           type="hash"
+        />
+
+        <InputCard
+          title="Domain Reputation"
+          description="Check if a domain is flagged as malicious or supsicious."
+          placeholder="Enter domain (e.g., example.com)"
+          buttonText="Scan Domain"
+          icon={<Globe className="w-8 h-8 text-threat-red"/>}
+          type="domain"
         />
       </div>
 
