@@ -10,10 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [0.3.1] - 2025-06-23
 ### Changed
 - Category in domain page now works
+- Fix Spelling in main page
 
 ## [0.3.0] - 2025-06-22
 ### Added
 - Domain form in main page
+
+---- 
 
 ## [0.2.0] - 2025-06-20
 ### Added

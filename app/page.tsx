@@ -52,7 +52,7 @@ export default function Home() {
 
         <InputCard
           title="Domain Reputation"
-          description="Check if a domain is flagged as malicious or supsicious."
+          description="Check if a domain is flagged as malicious or suspicious."
           placeholder="Enter domain (e.g., example.com)"
           buttonText="Scan Domain"
           icon={<Globe className="w-8 h-8 text-threat-red"/>}
