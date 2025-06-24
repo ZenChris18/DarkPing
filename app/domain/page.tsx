@@ -18,6 +18,19 @@ export default function DomainResultsPage() {
   const [results, setResults] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
 
+  // --- extract domain from url user provides ---
+  function extractDomain(input: string) {
+    try {
+      if (/^https?:\/\//i.test(input)) {
+        return new URL(input).hostname
+      }
+      // Remove trailing slashes and whitespace
+      return input.trim().replace(/^\/+|\/+$/g, "")
+    } catch {
+      return input.trim()
+    }
+  }
+
   useEffect(() => {
     if (domain) fetchDomainData(domain)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,9 +59,11 @@ export default function DomainResultsPage() {
     }
   }
 
+  // --- Update handleSearch to use extractDomain ---
   const handleSearch = (newDomain: string) => {
-    setDomain(newDomain)
-    router.replace(`/domain?value=${encodeURIComponent(newDomain)}`)
+    const cleanDomain = extractDomain(newDomain)
+    setDomain(cleanDomain)
+    router.replace(`/domain?value=${encodeURIComponent(cleanDomain)}`)
   }
 
   // Utility to defang a domain or URL

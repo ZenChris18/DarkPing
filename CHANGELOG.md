@@ -7,16 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 ## [0.3.2] - 2025-06-24
-## Added
-- External links for paid api keys
+### Added
+- Clickable external links to IP reputation services for richer data without requiring paid APIs
 
 ### Changed
 - Removed the map feature
+- Allow https links in the search input inside the domain results page
 
 ## [0.3.1] - 2025-06-23
 ### Changed
-- Category in domain page now works
-- Fix Spelling in main page
+- Enabled domain category filter on results page
+- Fixed typo on homepage
 
 ## [0.3.0] - 2025-06-22
 ### Added
