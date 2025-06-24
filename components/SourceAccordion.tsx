@@ -6,7 +6,7 @@ import type { ReactNode } from "react"
 
 interface Field {
   key: string
-  label: string
+  label: string | ReactNode // ReactNode allows for custom components but i am not using it right now
   type: "text" | "number" | "boolean" | "percentage" | "date" | "link" | "bytes" | "json"
 }
 

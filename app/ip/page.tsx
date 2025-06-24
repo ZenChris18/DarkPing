@@ -206,6 +206,22 @@ export default function IPResultsPage() {
             )}
           </div>
         </div>
+
+        {/* Right / IP2Proxy details dropdown */}
+        <div className="space-y-6">
+          <SourceAccordion
+            title="More Details (External Links)"
+            icon={<Database className="w-5 h-5 text-blue-600" />}
+            data={{ ip2proxy: `https://www.ip2proxy.com/${ip}` }}
+            fields={[
+              {
+                key: "ip2proxy",
+                label: "IP2Proxy Report",
+                type: "link",
+              },
+            ]}
+          />
+        </div>
       </div>
     </div>
   )
