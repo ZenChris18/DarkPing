@@ -6,7 +6,7 @@ import ResultSummary from "@/components/ResultSummary"
 import SourceAccordion from "@/components/SourceAccordion"
 import LoadingSpinner from "@/components/LoadingSpinner"
 import CopyButton from "@/components/CopyButton"
-import { MapPin, Shield, AlertTriangle, Database } from "lucide-react"
+import { MapPin, Shield, AlertTriangle, Database, Info } from "lucide-react"
 import IPSearchBar from "@/components/IPSearchBar"
 
 export default function IPResultsPage() {
@@ -212,11 +212,23 @@ export default function IPResultsPage() {
           <SourceAccordion
             title="More Details (External Links)"
             icon={<Database className="w-5 h-5 text-blue-600" />}
-            data={{ ip2proxy: `https://www.ip2proxy.com/${ip}` }}
+            data={{
+              ip2proxy: ip.includes(":")
+                ? "https://www.ip2proxy.com/"
+                : `https://www.ip2proxy.com/${ip}`,
+            }}
             fields={[
               {
                 key: "ip2proxy",
-                label: "IP2Proxy Report",
+                label: (
+                  <span className="flex items-center gap-1">
+                    IP2Proxy Report
+                    <span title="Direct IPv6 lookup is not supported. Please paste the IPv6 address on the IP2Proxy website.">
+                      <Info className="w-4 h-4 text-blue-400 cursor-pointer" />
+                    </span>
+                    :
+                  </span>
+                ),
                 type: "link",
               },
             ]}

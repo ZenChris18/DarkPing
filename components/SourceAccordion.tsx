@@ -97,8 +97,11 @@ export default function SourceAccordion({ title, icon, data, fields }: SourceAcc
         <div className="mt-4 pt-4 border-t border-gray-700">
           <div className="grid gap-3">
             {fields.map((field) => (
+              // do not render the ":" if the label is a ReactNode
               <div key={field.key} className="flex justify-between items-center py-2">
-                <span className="text-gray-400">{field.label}:</span>
+                <span className="text-gray-400 flex items-center gap-1">
+                  {typeof field.label === "string" ? `${field.label}:` : field.label}
+                </span>
                 <span className="text-white font-medium">{formatValue(data[field.key], field.type)}</span>
               </div>
             ))}
