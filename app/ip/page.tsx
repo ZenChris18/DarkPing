@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation"
 import ResultSummary from "@/components/ResultSummary"
 import SourceAccordion from "@/components/SourceAccordion"
 import LoadingSpinner from "@/components/LoadingSpinner"
-import IPMap from "@/components/IPMap"
 import CopyButton from "@/components/CopyButton"
 import { MapPin, Shield, AlertTriangle, Database } from "lucide-react"
 import IPSearchBar from "@/components/IPSearchBar"
@@ -206,19 +205,6 @@ export default function IPResultsPage() {
               />
             )}
           </div>
-        </div>
-
-        {/* Right / map */}
-        <div className="space-y-6">
-          {results.sources?.iplocation?.lat && results.sources?.iplocation?.lon && (
-            <div className="card">
-              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-threat-red" />
-                Geographic Location
-              </h3>
-              <IPMap lat={results.sources.iplocation.lat} lng={results.sources.iplocation.lon} ip={ip} />
-            </div>
-          )}
         </div>
       </div>
     </div>
