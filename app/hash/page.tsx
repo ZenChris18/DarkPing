@@ -1,14 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import ResultSummary from "@/components/ResultSummary"
 import SourceAccordion from "@/components/SourceAccordion"
 import LoadingSpinner from "@/components/LoadingSpinner"
 import CopyButton from "@/components/CopyButton"
 import { FileSearch, AlertTriangle, Database, Bug } from "lucide-react"
 import IPSearchBar from "@/components/IPSearchBar"
-import { useRouter } from "next/navigation"
+import ResultsTabs from "@/components/ResultsTabs"
 
 export default function HashResultsPage() {
   const searchParams = useSearchParams()
@@ -48,10 +48,7 @@ export default function HashResultsPage() {
     try {
       setLoading(true)
       setError(null)
-
-      // grab VT key
       const vtKey = localStorage.getItem("apikey_virustotal") || ""
-
       const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || ""
       const res = await fetch(
         `${apiBase}/api/check-hash?hash=${encodeURIComponent(hashValue)}`,
@@ -118,6 +115,64 @@ export default function HashResultsPage() {
 
   if (!results) return null
 
+  // --- Tabs definition ---
+  const sourceTabs = [
+    results.sources?.virustotal && {
+      key: "virustotal",
+      label: "VirusTotal",
+      content: (
+        <SourceAccordion
+          title="VirusTotal"
+          icon={<AlertTriangle className="w-5 h-5" />}
+          data={results.sources.virustotal}
+          fields={[
+            { key: "positives", label: "Detections", type: "number" },
+            { key: "total", label: "Total Engines", type: "number" },
+            { key: "scan_date", label: "Scan Date", type: "date" },
+            { key: "permalink", label: "Report Link", type: "link" },
+          ]}
+        />
+      ),
+    },
+    results.sources?.hybridanalysis && {
+      key: "hybridanalysis",
+      label: "Hybrid Analysis",
+      content: (
+        <SourceAccordion
+          title="Hybrid Analysis"
+          icon={<Bug className="w-5 h-5" />}
+          data={results.sources.hybridanalysis}
+          fields={[
+            { key: "verdict", label: "Verdict", type: "text" },
+            { key: "threat_score", label: "Threat Score", type: "number" },
+            { key: "av_detect", label: "AV Detection", type: "percentage" },
+            { key: "type_short", label: "File Type", type: "text" },
+            { key: "size", label: "File Size", type: "bytes" },
+            { key: "submit_name", label: "Original Name", type: "text" },
+          ]}
+        />
+      ),
+    },
+    results.file_info && {
+      key: "fileinfo",
+      label: "File Info",
+      content: (
+        <SourceAccordion
+          title="File Information"
+          icon={<FileSearch className="w-5 h-5" />}
+          data={results.file_info}
+          fields={[
+            { key: "name", label: "File Name", type: "text" },
+            { key: "size", label: "File Size", type: "bytes" },
+            { key: "type", label: "File Type", type: "text" },
+            { key: "first_seen", label: "First Seen", type: "date" },
+            { key: "last_seen", label: "Last Seen", type: "date" },
+          ]}
+        />
+      ),
+    },
+  ].filter(Boolean)
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header + Search Bar */}
@@ -126,7 +181,7 @@ export default function HashResultsPage() {
         <div className="w-full max-w-md">
           <IPSearchBar
             onSearch={handleSearch}
-            placeholder="Enter new hash (MD5, SHA-1, or SHA-256)" // updated placeholder for hash page
+            placeholder="Enter new hash (MD5, SHA-1, or SHA-256)"
             buttonText="Search"
           />
         </div>
@@ -154,50 +209,7 @@ export default function HashResultsPage() {
             Malware Analysis Sources
           </h2>
 
-          {results.sources?.virustotal && (
-            <SourceAccordion
-              title="VirusTotal"
-              icon={<AlertTriangle className="w-5 h-5" />}
-              data={results.sources.virustotal}
-              fields={[
-                { key: "positives", label: "Detections", type: "number" },
-                { key: "total", label: "Total Engines", type: "number" },
-                { key: "scan_date", label: "Scan Date", type: "date" },
-                { key: "permalink", label: "Report Link", type: "link" },
-              ]}
-            />
-          )}
-
-          {results.sources?.hybridanalysis && (
-            <SourceAccordion
-              title="Hybrid Analysis"
-              icon={<Bug className="w-5 h-5" />}
-              data={results.sources.hybridanalysis}
-              fields={[
-                { key: "verdict", label: "Verdict", type: "text" },
-                { key: "threat_score", label: "Threat Score", type: "number" },
-                { key: "av_detect", label: "AV Detection", type: "percentage" },
-                { key: "type_short", label: "File Type", type: "text" },
-                { key: "size", label: "File Size", type: "bytes" },
-                { key: "submit_name", label: "Original Name", type: "text" },
-              ]}
-            />
-          )}
-
-          {results.file_info && (
-            <SourceAccordion
-              title="File Information"
-              icon={<FileSearch className="w-5 h-5" />}
-              data={results.file_info}
-              fields={[
-                { key: "name", label: "File Name", type: "text" },
-                { key: "size", label: "File Size", type: "bytes" },
-                { key: "type", label: "File Type", type: "text" },
-                { key: "first_seen", label: "First Seen", type: "date" },
-                { key: "last_seen", label: "Last Seen", type: "date" },
-              ]}
-            />
-          )}
+          <ResultsTabs tabs={sourceTabs} />
         </div>
       </div>
     </div>

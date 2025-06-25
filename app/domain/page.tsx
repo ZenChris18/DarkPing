@@ -8,6 +8,7 @@ import LoadingSpinner from "@/components/LoadingSpinner"
 import CopyButton from "@/components/CopyButton"
 import { Globe, AlertTriangle, Database } from "lucide-react"
 import IPSearchBar from "@/components/IPSearchBar"
+import ResultsTabs from "@/components/ResultsTabs"
 
 export default function DomainResultsPage() {
   const router = useRouter()
@@ -17,6 +18,7 @@ export default function DomainResultsPage() {
   const [loading, setLoading] = useState(true)
   const [results, setResults] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
+  const [tab, setTab] = useState(0)
 
   // --- extract domain from url user provides ---
   function extractDomain(input: string) {
@@ -106,6 +108,45 @@ export default function DomainResultsPage() {
     )
   }
 
+  // Build the sourceTabs array for ResultsTabs
+  const sourceTabs = [
+    results.sources?.virustotal && {
+      key: "virustotal",
+      label: "VirusTotal",
+      content: (
+        <SourceAccordion
+          title="VirusTotal"
+          icon={<AlertTriangle className="w-5 h-5" />}
+          data={results.sources.virustotal}
+          fields={[
+            { key: "malicious", label: "Malicious Votes", type: "number" },
+            { key: "suspicious", label: "Suspicious Votes", type: "number" },
+            { key: "harmless", label: "Harmless Votes", type: "number" },
+            { key: "reputation", label: "Community Score", type: "number" },
+            { key: "permalink", label: "View Report", type: "link" },
+          ]}
+        />
+      ),
+    },
+    results.sources?.domain_info && {
+      key: "domain_info",
+      label: "Domain Info",
+      content: (
+        <SourceAccordion
+          title="Domain Info"
+          icon={<Globe className="w-5 h-5 text-blue-400" />}
+          data={results.sources.domain_info}
+          fields={[
+            { key: "registrar", label: "Registrar", type: "text" },
+            { key: "creation_date", label: "Created On", type: "date" },
+            { key: "categories", label: "Categories", type: "json" },
+          ]}
+        />
+      ),
+    },
+    // Add more sources as needed...
+  ].filter(Boolean)
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header + Search Bar */}
@@ -140,33 +181,7 @@ export default function DomainResultsPage() {
             Domain Intelligence Sources
           </h2>
 
-          {results.sources?.virustotal && (
-            <SourceAccordion
-              title="VirusTotal"
-              icon={<AlertTriangle className="w-5 h-5" />}
-              data={results.sources.virustotal}
-              fields={[
-                { key: "malicious", label: "Malicious Votes", type: "number" },
-                { key: "suspicious", label: "Suspicious Votes", type: "number" },
-                { key: "harmless", label: "Harmless Votes", type: "number" },
-                { key: "reputation", label: "Community Score", type: "number" },
-                { key: "permalink", label: "View Report", type: "link" },
-              ]}
-            />
-          )}
-
-          {results.domain_info && (
-            <SourceAccordion
-              title="Domain Info"
-              icon={<Globe className="w-5 h-5 text-blue-400" />}
-              data={results.domain_info}
-              fields={[
-                { key: "registrar", label: "Registrar", type: "text" },
-                { key: "creation_date", label: "Created On", type: "date" },
-                { key: "categories", label: "Categories", type: "json" },
-              ]}
-            />
-          )}
+          <ResultsTabs tabs={sourceTabs} />
         </div>
       </div>
     </div>
