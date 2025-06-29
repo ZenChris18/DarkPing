@@ -20,7 +20,6 @@
 
 - **Privacy-First:**  
   - **API keys are stored only in your browser** (local storage).
-  - **Keys are never sent to our server** or any third party.
   - All queries are made directly from your browser to the official APIs.
 
 - **Modern UI:**  
@@ -67,8 +66,8 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
    Go to the [API Keys](/apikeys) page and enter your keys for each provider.  
    _Keys are stored locally and never leave your browser._
 
-2. **Scan an IP or Hash:**  
-   - Use the home page to enter an IP address or file hash.
+2. **Scan an IP, Hash or Domain:**  
+   - Use the home page to enter an IP address, file hash, or domain.
    - View detailed results, verdicts, and recommendations.
 
 3. **Review Results:**  
@@ -83,7 +82,6 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 - All keys are stored in your browser's local storage.
 - All threat intelligence queries are made directly from your browser.
 - You can clear your keys at any time from the API Keys page.
-- No scan data or keys are ever stored on our servers.
 
 ---
 
@@ -109,5 +107,3 @@ MIT License
 - Built with [Next.js](https://nextjs.org/) and [Tailwind CSS](https://tailwindcss.com/)
 
 ---
-
-**Stay safe. Share responsibly.**
