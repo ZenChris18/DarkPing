@@ -41,7 +41,6 @@ export default function ApiKeyPage() {
           <span className="absolute left-6 top-full mt-2 bg-gray-900 text-yellow-400 text-xs rounded px-3 py-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10 w-64">
             <b>Privacy:</b><br />
             • Keys are <u>only</u> stored in your browser.<br />
-            • Never sent to our server.<br />
             • Used just for threat API requests.<br />
             • Clear anytime with the button.<br />
             <span className="text-yellow-300">Use dedicated keys for best security.</span>

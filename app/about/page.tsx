@@ -26,7 +26,7 @@ export default function AboutPage() {
         They are <u>not</u> shared with or stored by this app's developers or any third party.</strong>
       </p>
       <p className="text-gray-400 text-sm">
-        For your privacy and security, use dedicated API keys when possible. No scan data or keys are ever stored on our servers.
+        For your privacy and security, use dedicated API keys when possible.
       </p>
     </div>
   )
