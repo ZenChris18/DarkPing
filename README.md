@@ -78,7 +78,6 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 
 ## Security & Privacy
 
-- **Your API keys are never sent to our server or any third party.**
 - All keys are stored in your browser's local storage.
 - All threat intelligence queries are made directly from your browser.
 - You can clear your keys at any time from the API Keys page.
