@@ -11,7 +11,7 @@ export default function AboutPage() {
       <ul className="list-disc ml-6 text-gray-300 mb-4">
         <li>Enter an IP address (IPv4 or IPv6) or a file hash (MD5, SHA-1, SHA-256).</li>
         <li>DarkPing queries multiple threat intelligence providers and aggregates the results for you.</li>
-        <li>All API keys you provide are <span className="text-yellow-400 font-semibold">stored only in your browser</span> and never sent to any server except the official APIs.</li>
+        <li>All API keys you provide are <span className="text-yellow-400 font-semibold">stored only in your browser</span>.</li>
       </ul>
       <h2 className="text-xl font-semibold mt-8 mb-2 text-white">Data Sources</h2>
       <ul className="list-disc ml-6 text-gray-300 mb-4">
@@ -22,8 +22,7 @@ export default function AboutPage() {
       </ul>
       <h2 className="text-xl font-semibold mt-8 mb-2 text-white">Privacy & Security</h2>
       <p className="text-yellow-400 text-sm mb-4">
-        ⚠️ <strong>Your API keys are stored <u>locally</u> in your browser and are never sent to any server except the official threat intelligence APIs you use.<br />
-        They are <u>not</u> shared with or stored by this app's developers or any third party.</strong>
+        ⚠️ <strong>Your API keys are stored <u>locally</u> in your browser and are never sent to any server except the official threat intelligence APIs you use.<br /></strong>
       </p>
       <p className="text-gray-400 text-sm">
         For your privacy and security, use dedicated API keys when possible.
