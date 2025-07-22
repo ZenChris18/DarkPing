@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [0.3.4] - 2025-07-22
 ### Added
 - IpQualityScore lookup in external links in IP results
+- Added external links tab in domain search result
 
 ---
 ## [0.3.3] - 2025-06-25

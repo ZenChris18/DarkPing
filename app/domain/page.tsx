@@ -144,7 +144,27 @@ export default function DomainResultsPage() {
         />
       ),
     },
-    // Add more sources as needed...
+    {
+      key: "external_links",
+      label: "External Links",
+      content: (
+        <SourceAccordion
+          title="External Links"
+          icon={<Database className="w-5 h-5 text-blue-600" />}
+          data={{
+            whois: `https://www.whois.com/whois/${domain}`,
+          }}
+          fields={[
+            {
+              key: "whois",
+              label: "Whois Lookup",
+              type: "link",
+            },
+          ]}
+        />
+      ),
+    },
+    // ...add more sources as needed...
   ].filter(Boolean)
 
   return (
