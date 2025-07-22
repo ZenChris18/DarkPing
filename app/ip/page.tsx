@@ -208,6 +208,7 @@ export default function IPResultsPage() {
             ip2proxy: ip.includes(":")
               ? "https://www.ip2proxy.com/"
               : `https://www.ip2proxy.com/${ip}`,
+            ipqualityscore: `https://www.ipqualityscore.com/vpn-ip-address-check/lookup/${ip}`,
           }}
           fields={[
             {
@@ -221,6 +222,11 @@ export default function IPResultsPage() {
                   :
                 </span>
               ),
+              type: "link",
+            },
+            {
+              key: "ipqualityscore",
+              label: "IPQualityScore Lookup",
               type: "link",
             },
           ]}
